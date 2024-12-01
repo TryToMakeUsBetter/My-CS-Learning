@@ -167,8 +167,16 @@ type entry struct {
 协程： 全局变量或者是消息传递机制
 ## Goroutine
 优势：栈空间最小可以到2KB，线程的栈空间最小是2MB
-## 调度
-GMP模型
-G means Groutine
-M means Physical Processor
-P means Logical Processor
+## 并发模型
+参考操作系统[线程模型](./OperatingSystem.md)
+Golang基于两极线程模型设计了GMP模型
+### GMP模型
+G means Groutine 包含栈指令指针
+M means Physical Machine系统线程，由操作系统进行管理
+P means Logical Processor维护了一个本地Groutine队列
+Sched means Scheduler
+当
+通过Go Runtime进行协程的调度。
+
+REFERENCE 
+[知乎 GMP万字图文](https://zhuanlan.zhihu.com/p/869632834)
