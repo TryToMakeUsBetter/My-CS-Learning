@@ -48,8 +48,8 @@ TCP报文
 |:-:|:-:|:-:|
 |源端口|16|发送方端口|
 |目的端口|16|接收方端口|
-|SEQ|32|字节流编号|
-|ACK Number|32|应答顺序号|
+|seq number|32|字节流编号|
+|ack number|32|应答顺序号|
 |偏移|4|TCP包头长度|
 |保留位|6||
 |URG|1|紧急标志位|
@@ -150,6 +150,33 @@ UDP编码一般流程:
 
     UDP：shutdown函数无效
 ##### TCP建立连接和断开连接
+
+建立连接:
+    第一次:SYN=1,seq number = x;
+
+    第二次:ACK=1,ack number = x+1,SYN=1 seq number=y;
+
+    第三次:ACK=1,ack number=y+1,seq number = x+1；
+
+    **为什么要三次握手**:
+
+        TCP，双工，在第二次握手的时候，发送方的Send和接收方的Receive功能正常是双向可知的，此时需要第三次握手去去确认发送方的Receiver和接收方的Send功能正常。
+断开连接:
+    第一次:FIN=1,seq number = n;
+
+    第二次:ACK=1,ack number = n+1;
+
+    CLOSE-WAIT;
+
+    第三次:FIN=1,seq number = m;
+
+    第四次:ACK=1,seq number=m+1;
+
+    TIME-WAIT;
+
+    **为什么要四次挥手**:
+        因为建立连接的时候，合并了一次收发的操作。而且一次挥手只能断开一方的连接。
+
 
 ### 网络层
 
