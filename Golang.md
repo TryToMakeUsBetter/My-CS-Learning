@@ -225,3 +225,40 @@ Sched means Scheduler
 
 REFERENCE 
 [知乎 GMP万字图文](https://zhuanlan.zhihu.com/p/869632834)
+
+# 常见框架
+
+## Gin
+功能列表:
+    鉴权
+    上下文、参数绑定、渲染
+    中间件
+    路由
+    gin engine
+### 目录结构
+``` shell
+/src/
+    auth.go
+    binding //参数绑定的各种实现
+    context.go //golang中context的实现
+    gin.go //gin引擎的核心文件
+    routergroup.go //路由组的实现
+    render.go //数据渲染相关
+    internal //内部实现
+    tree.go //保存路由信息
+    debug.go 
+    errors.go
+    logger.go
+    mode.go
+    recover.go
+    response_writer.go
+    utils.go
+```
+
+### 功能框架
+
+User访问net.HTTP，通过ServerHTTP处理请求，通过requestHandler解析请求，通过路由信息查找方法，调用方法执行函数。
+
+## Go-zero
+
+## Gorm
