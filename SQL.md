@@ -163,3 +163,7 @@ B+树
 ``` go
 create view <view_name> as <select语句>
 ```
+# 容器化部署
+``` cmd
+docker run -p 3306:3306 --name JY_mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql
+```
