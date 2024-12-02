@@ -262,3 +262,69 @@ User访问net.HTTP，通过ServerHTTP处理请求，通过requestHandler解析�
 ## Go-zero
 
 ## Gorm
+GORM是一个ORM库
+### 特点
+1. 全功能ORM:支持CRUD、事务、关联关系、钩子函数、预加载等
+
+2. 数据库支持: 支持MySQL、PostgreSQL、SQLite、SQL Server
+
+3. 链式调用: 支持链式调用编写SQL查询
+
+4. 前一功能: 提供数据库自动迁移能力，可以自动创建或更新表结构
+
+### 使用
+#### 初始化数据库连接
+```go
+// 配置数据库连接信息
+	dsn := "user:password@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local"
+
+	// 初始化数据库连接
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+```
+#### 定义模型
+``` go
+type User struct {
+	ID    uint   `gorm:"primaryKey"`
+	Name  string `gorm:"size:100"`
+	Email string `gorm:"unique"`
+	Age   int
+}
+```
+#### CRUD
+```go
+user := User{Name: "Alice", Email: "alice@example.com", Age: 25}
+result := db.Create(&user)
+
+if result.Error != nil {
+	log.Println("插入失败:", result.Error)
+} else {
+	log.Printf("成功插入用户，ID: %d", user.ID)
+}
+```
+
+```go
+var user User
+// 查询单条记录
+db.First(&user, 1) // 根据主键查询
+db.First(&user, "email = ?", "alice@example.com")
+
+// 查询多条记录
+var users []User
+db.Where("age > ?", 20).Find(&users)
+```
+
+```go
+// 更新用户的 Email
+db.Model(&user).Update("Email", "newalice@example.com")
+
+// 批量更新
+db.Model(&user).Updates(User{Name: "Alice Updated", Age: 26})
+```
+
+```go
+// 根据主键删除
+db.Delete(&user, 1)
+
+// 根据条件删除
+db.Where("age > ?", 30).Delete(&User{})
+```
