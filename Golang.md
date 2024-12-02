@@ -7,6 +7,12 @@ string len()返回的是字节个数
 []byte
 ### 相互转换
 通过内建的函数进行转换
+### 拼接
+fmt.sprintf()
++
+strings.join()
+strings.Builder().WriteString()
+bytes.Buffer().WriteString()
 
 ### 相关包
 strings
