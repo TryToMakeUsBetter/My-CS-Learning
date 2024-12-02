@@ -54,6 +54,9 @@ Transaction
 要求一个数据库表中不包含已在其他表中已包含的非主关键字信息。外键约束，消除传递依赖。
 
 ### 底层
+#### Innodb
+[REFERENCE](https://www.zhihu.com/question/594498434/answer/3004627072)
+
 #### 数据库行的底层结构
 #### 并发控制
 ##### 读写锁
