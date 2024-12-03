@@ -288,7 +288,7 @@ GORM是一个ORM库
 ### 使用
 #### 初始化数据库连接
 ```go
-// 配置数据库连接信息
+    // 配置数据库连接信息
 	dsn := "user:password@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local"
 
 	// 初始化数据库连接
