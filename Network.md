@@ -37,6 +37,18 @@ HTTP是无状态的,使用HTTP Cookie就可以使用有状态的会话。
 
 HTTP底层 TCP、QUIC。
 
+##### 为什么是无状态的
+不会保持数据
+比如登陆，如果不做处理，在login以后，就不知道这个连接是否登陆过。
+
+###### session、cookie、token
+
+cookie:服务器向浏览器发一个cookie，浏览器保存起来，下次交互通过携带cookie交互来保持数据。cookie不可以跨域名。
+
+session:服务端保存客户端信息
+
+token:
+
 ##### HTTP可以控制什么
 缓存: 文档如何被缓存,服务端可以指示代理和客户端缓存哪些内容以及多久,客户端可以指示中间缓存代理忽略已存储的文档。
 
@@ -73,29 +85,23 @@ Content-Type: text/html
 4. 关闭连接或为后续请求重用连接
 
 ###### 请求
-Method GET、POST、DELETE、OPTIONS、HEAD、PUT、DELETE、TRACE、CONNECT
+**Method**(POST,PUT,TRACE,CONNECT,GET,HEAD,DELETE,OPTIONS) **URI Protocol version** 
 [介绍](https://www.cnblogs.com/machao/p/5788425.html)
 
-Path
+Headers(Host、User-Agent、Accpet、Accpet-Language、Accept-Encoding、Connection、Upgrade-Insecure-Requests、Content-Type、Conten-Length)
 
-Protocol version
+Empty line
 
-Headers
+Body
 
 ###### 响应
-Protocol version
+**Protocol version**,**Status code**(1xx:临时响应,2xx:成功状态码,3xx:重定向状态码,4xx:客户端错误,5xx:服务器错误),**Status message**
 
-Status code
-    1xx:临时响应
-    2xx:成功状态码
-    3xx:重定向状态码
-    4xx:客户端错误
-    5xx:服务器错误
+Headers(General header,Response header,Representation header)
 
-Status message
+Empty line
 
-Headers
-
+Body
 [返回网络模型章节](#networkModule)
 REFERENCE
 [HTTP](https://developer.mozilla.org/zh-CN/docs/Web/HTTP)
