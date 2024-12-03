@@ -105,6 +105,12 @@ Body
 [返回网络模型章节](#networkModule)
 REFERENCE
 [HTTP](https://developer.mozilla.org/zh-CN/docs/Web/HTTP)
+
+###### Method
+Get:幂等的,浏览器缓存Get,空Body,请求参数在url中
+Post:不幂等的,实体Body
+PUT:幂等的
+
 ### 传输层
 #### TCP和UDP
 ##### 端口
