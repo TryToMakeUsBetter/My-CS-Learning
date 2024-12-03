@@ -111,6 +111,11 @@ Get:幂等的,浏览器缓存Get,空Body,请求参数在url中
 Post:不幂等的,实体Body
 PUT:幂等的
 
+#### HTTPS
+HTTP+SSL/TLS
+CA证书
+端口443
+
 ### 传输层
 #### TCP和UDP
 ##### 端口
@@ -267,3 +272,15 @@ UDP编码一般流程:
 ### 网络层
 
 #### IP
+
+# 场景
+## 输入www.baidu.com以后发生了什么
+解析URL
+查找本地缓存
+DNS解析
+获取MAC地址
+TCP建立连接
+HTTPS四次握手
+返回数据
+渲染页面
+TCP四次挥手
