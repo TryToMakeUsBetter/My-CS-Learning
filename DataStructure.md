@@ -19,8 +19,17 @@ type List struct{
 
 #### 反转链表
 
-##### 常态反转
-
-思路:可以理解为对一个链表顺序读取节点，将该节点使用头插法插入头部。
-
-##### 区间反转
+```go
+mark:=&Node{
+    val,
+    head,
+}
+pre := mark
+cur := pre.Next
+for{
+    nxt = cur.Next
+    cur.Next=nxt.Next
+    nxt.Next=pre.Next
+    pre.Next=nxt
+}
+```
