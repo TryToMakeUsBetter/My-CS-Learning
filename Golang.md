@@ -40,7 +40,7 @@ type hmap struct{
     count int // == len()
     flags uint8 //
     B uint8 //loadFactor * 2 ^ B is the up limit
-    noverflow uint16 //overflow buckets
+    noverflow uint16 //number overflow buckets
     hash0 uint32 //hash seed
 
     buckets unsafe.Pointer //bucket in use
