@@ -122,8 +122,5 @@ ingress:通过Ingress分发流量
 Kubernetes访问外部服务
 
 配置ExternalName
+Endpoint
 https://blog.csdn.net/iiothub/article/details/136035831
-
-### Ingress
-
-## 卷配置
