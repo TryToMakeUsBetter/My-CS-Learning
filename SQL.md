@@ -195,6 +195,7 @@ docker run -p 3306:3306 --name JY_mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql
 ```
 
 # 面试
+## 分页
 
 ## A=10 B<100 C>200 怎么查
 
