@@ -3,6 +3,8 @@
 获取类型信息 reflect.TypeOf
 获取值信息 reflect.ValueOf
 
+动态的获取和设置结构体的字段
+
 ## []byte,[]rune,string
 string len()返回的是字节个数
 
