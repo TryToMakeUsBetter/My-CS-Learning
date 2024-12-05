@@ -1,4 +1,8 @@
 # 基本数据结构
+## reflect
+获取类型信息 reflect.TypeOf
+获取值信息 reflect.ValueOf
+
 ## []byte,[]rune,string
 string len()返回的是字节个数
 
