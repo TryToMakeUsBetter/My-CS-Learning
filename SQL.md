@@ -196,6 +196,14 @@ docker run -p 3306:3306 --name JY_mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql
 
 # 面试
 ## 分页
+limit offset line
+offset决定从第几条开始分页
+
+desc 倒序
+
+order by 排序
+
+
 
 ## A=10 B<100 C>200 怎么查
 

@@ -147,4 +147,10 @@ redis 非关系型数据库，缓存数据(也可以持久化)
 支持事务
 
 ## redis和mysql的缓存一致问题
-1. 
+
+
+## Redis实现消息队列
+
+List
+Pub/Sub模式
+Stream流
