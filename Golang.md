@@ -192,8 +192,47 @@ type entry struct {
 
 ## 接口
 
-最大的用处
-    鸭子类型
+鸭子类型
+
+### 底层实现
+
+```golang
+type iface struct {
+    tab  *itab
+    data unsafe.Pointer
+}
+
+type itab struct {
+    inter *interfacetype
+    _type *_type
+    hash  uint32
+    _     [4]byte
+    fun   [1]uintptr
+}
+
+```
+
+### 类型断言
+
+```golang
+package main
+
+import (
+    "fmt"
+)
+
+func main() {
+    var i interface{} = "hello"
+
+    // 成功的类型断言
+    s, ok := i.(string)
+    if ok {
+        fmt.Println("String value:", s) // 输出: String value: hello
+    } else {
+        fmt.Println("类型断言失败")
+    }
+}
+```
 
 ### 使用
 
@@ -208,6 +247,10 @@ interface是行为规范的约束
 ### 为什么
 
 ## 结构体
+
+### 空struct使用
+
+用作信号的传递
 
 ## chan
 
@@ -357,6 +400,10 @@ CGO并不是框架， 而是Golang自带的特性
     中间件
     路由
     gin engine
+
+### GoFrame框架
+
+https://goframe.org/quick/scaffold-boost
 
 ### 目录结构
 
