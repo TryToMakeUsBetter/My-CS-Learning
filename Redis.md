@@ -1,4 +1,5 @@
 # 使用
+
 ## 基础
 
 连接:redis-cli
@@ -46,11 +47,13 @@ streams：用于消息队列和日志存储，支持消息的持久化和时间�
 modules：拓展Redis功能
 
 ### String
+
 一个key对应一个val
 
 最大512MB，二进制安全
 
 #### 命令
+
 ```redis
 SET key value
 GET key
@@ -62,6 +65,7 @@ APPEND key value
 ### Hash
 
 #### 命令
+
 ```redis
 HSET key field value
 HGET key field
@@ -72,6 +76,7 @@ HDEL key field
 ### List
 
 #### 命令
+
 ```redis
 LPUSH key value
 RPUSH key value
@@ -83,6 +88,7 @@ LRANGE key start stop
 ### Set
 
 #### 命令
+
 ```redis
 SADD key value
 SREM key value
@@ -91,9 +97,11 @@ SISMEMBER key value
 ```
 
 ### ZSet
+
 #### 底层数据结构
 
 #### 命令
+
 ```reids
 ZADD key socre value
 ZRANGE key start stop [withscores]
@@ -102,15 +110,19 @@ ZSCORE key value
 ```
 
 ### HyperLogLog
+
 统计唯一值的近似值
 
 ### Bitmaps
+
 位数组，对字符串进行位操作
 
 ### Geospatial Indexes
+
 处理地理空间数据，支持空间索引和半径查询
 
 ### Streams
+
 日志数据类型
 
 ## 事务
@@ -120,7 +132,9 @@ Redis命令的执行是原子性的，但是事务不是原子性的
 DISCARD 取消事务
 
 ## Redis脚本
+
 Lua解释器执行脚本
+
 # 原理
 
 ## 紧凑列表
@@ -128,6 +142,7 @@ Lua解释器执行脚本
 ziplist-quicklist-listpack
 
 ## 跳表
+
 为什么使用跳表而非红黑树，是因为跳表的实现相对来说比较简单
 
 ZSet底层是跳表，键值对存储，key唯一，可排序
@@ -136,10 +151,12 @@ ZSet底层是跳表，键值对存储，key唯一，可排序
 # 面试
 
 ## 与mysql的差别
+
 mysql 关系型数据库，持久化数据
 redis 非关系型数据库，缓存数据(也可以持久化)
 
 ## Redis的优缺点
+
 内存读写速度快
 数据结构丰富
 支持分布式（主从复制和哨兵机制）
@@ -148,7 +165,6 @@ redis 非关系型数据库，缓存数据(也可以持久化)
 支持事务
 
 ## redis和mysql的缓存一致问题
-
 
 ## Redis实现消息队列
 
