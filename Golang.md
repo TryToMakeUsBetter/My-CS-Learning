@@ -1,4 +1,9 @@
 # 基本数据结构
+
+## Float64
+
+使用的时候需要注意精度问题，需要主动截取转换有效位
+
 ## reflect
 获取类型信息 reflect.TypeOf
 获取值信息 reflect.ValueOf
@@ -41,6 +46,7 @@ map是并发不安全的
     sync.map
 ### map
 #### map的基础结构和工作机制
+
 ``` go
 type hmap struct{
     count int // == len()
@@ -74,7 +80,7 @@ extra包含了
     overflow 溢出桶的地址数组
 
     oldoverflow 原桶已使用的溢出桶的地址数组
-
+    
     nextOverflow 下一个空闲的溢出桶
 
 bucket的结构
@@ -98,7 +104,7 @@ tophash存储计算出的哈希值的高8位
 渐进式扩容
 
 当对当前buckets进行写入操作的时候就会触发迁移
- 
+
 ### sync
 #### sync.Map底层结构
 ``` go
@@ -266,7 +272,13 @@ Sched means Scheduler
 REFERENCE 
 [知乎 GMP万字图文](https://zhuanlan.zhihu.com/p/869632834)
 
+## CGO
+
+CGO并不是框架， 而是Golang自带的特性
+
 # 常见框架
+
+
 
 ## Gin Go Web编程
 功能列表:
@@ -394,3 +406,7 @@ db.Where("age > ?", 30).Delete(&User{})
 5. 切片截取
 
 ## 协程泄漏
+
+1. 协程被阻塞无法唤起
+
+## 
