@@ -1,6 +1,9 @@
 # 数据库使用
+
 ## 以MySQL、Innodb为例
+
 ### 基础的使用
+
 ``` sql
 Link 
     mysql -u user_name -p password
@@ -34,7 +37,9 @@ Transaction
     unlock tables
     set transaction isolation level read uncommitted|read committed|repeatable read|serializable
 ```
+
 ### 表的连接
+
 ``` sql
     select <col> from tablea a inner join tableb b on a.key = b.key
     select <col> from tablea a left join tableb b on a.key = b.key
@@ -44,30 +49,45 @@ Transaction
 ```
 
 ### 设计范式
+
 #### BCNF
+
 在3NF上进一步规范，在其他列属性不是主键的子集的情况下，构建超键
+
 #### 1NF
+
 数据库中表的每一列都是不可分割的基本数据项，同一列中不可以有多个值。
+
 #### 2NF
+
 每个实例或行必须可以被唯一地区分，要求实体的属性完全依赖于主关键字。主键约束，消除部分依赖。
+
 #### 3NF
+
 要求一个数据库表中不包含已在其他表中已包含的非主关键字信息。外键约束，消除传递依赖。
 
 ### 底层
+
 #### Innodb
+
 [REFERENCE](https://www.zhihu.com/question/594498434/answer/3004627072)
 
 #### 数据库行的底层结构
+
 #### 并发控制
+
 ##### 锁
+
 表锁
 
 临键锁
 
 ###### 行级锁
+
 在查询语句以后增加一个FOR UPDATE(InnoDB)
 
 ###### 间隙锁
+
 一个区间的锁，是开区间
 
 共享锁/排他锁
@@ -77,6 +97,7 @@ Transaction
 插入意向锁
 
 自增锁
+
 #### 事务
 
 ##### 隔离级别
@@ -94,16 +115,20 @@ Serializable
 存储引擎只需要修改内存中的数据副本，将更改的记录写入事务日志，事务日志会被持久化到硬盘。
 
 ##### AUTOCOMMIT
+
 单个insert、update或delete会被包装在一个事务中提交
 不要在事务中混用不同的存储引擎
 
 ##### 隐式锁定和显式锁定
+
 Innodb----两阶段锁定协议
 
 事务执行期间随时可以获取锁
 
 锁在提交或回滚后才会释放（所有锁同时释放）
+
 #### MVCC
+
 通过Read View来实现
 每行记录的结构除了我们定义的内容，还包括数据库隐式定义的DB_TRX_ID,DB_ROLL_PTR,DB_ROW_ID等字段
 
@@ -116,6 +141,7 @@ DB_ROLL_PTR,回滚指针,指向undo log中的上一个版本
 DELETED_BIT,删除不代表真的删除，只是置为删除。
 
 ##### undo log
+
 Insert Undo log 插入对应的就是删除，所以不需要保存数据
 
 Update Undo log 修改则需要保留旧有的值，并且使用DB_ROLL_PTR指向该记录
@@ -132,20 +158,29 @@ Read View维护的属性:
 如果DB_TRX_ID < up_limit_id 则当前事务可以看见该记录，如果DB_TRX_ID > low_limit_id则不可见。如果在二者之间，则查找trx_list如果在其中则不可见，不在其中则可见
 
 ### 索引
+
 #### 常见索引模型
+
 ##### 哈希表
+
 ##### 有序数组
+
 ##### 二叉搜索树
+
 特点:父节点左子树所有节点比父节点小，右子树所有节点比父节点大。
+
 ##### InnoDB索引模型
+
 为什么不使用二叉树
 减少磁盘访问次数
 B+树
+
 1. 减少I/O次数，叶子节点可以形成一个列表，数据叶中可存放的有效数据增加了。
 2. 每次查询的时间复杂度固定
 3. 遍历效率更高(范围查询)
 
 B树
+
 1. 多叉结构，将低树的高度
 2. 节点内存储多个关键字
 
@@ -154,13 +189,16 @@ B+树提高了范围查询的效率
 
 B+树 I/O次数更少
 
-
 #### 索引分类
+
 ##### 聚簇索引
+
 使用主键构造一棵B+树，叶子节点存放整张表的行数据。
 
 没有主键就使用，其他可以成为主键的列，没有这样的列就使用数据库内置的值
+
 ##### 非聚簇索引
+
 使用多个字段建立的索引。
 非叶子节点存储的是索引列和对应的主键id，叶子节点存储的是索引列的数据和对应的主键ID和存储数据的地址
 
@@ -171,17 +209,21 @@ B+树 I/O次数更少
 小心回表查询
 
 ##### 前缀索引
+
 当索引列的字符比较多的时候，可以只索引列开始的部分字符串，节约索引空间，提高效率。
 
 比如index(key(number))
 
 ##### 普通索引
+
 普通索引的叶子节点不存放行数据，而是主键值。
 
 ##### 唯一索引
+
 唯一索引允许有空值
 
 ##### 全文索引
+
 允许在char、varchar上建立全文索引
 
 ### 视图
@@ -189,21 +231,23 @@ B+树 I/O次数更少
 ``` go
 create view <view_name> as <select语句>
 ```
+
 # 容器化部署
+
 ``` cmd
 docker run -p 3306:3306 --name JY_mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql
 ```
 
 # 面试
+
 ## 分页
+
 limit offset line
 offset决定从第几条开始分页
 
 desc 倒序
 
 order by 排序
-
-
 
 ## A=10 B<100 C>200 怎么查
 
@@ -215,7 +259,6 @@ order by 排序
 
 Insertion合并和Union合并
 
-Insertion合并中涉及两种情况等值匹配，主键列可以是范围匹配    【
-‘
+Insertion合并中涉及两种情况等值匹配，主键列可以是范围匹配 
 
 从多个索引中查询到的结果取交集
