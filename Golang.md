@@ -401,10 +401,6 @@ CGO并不是框架， 而是Golang自带的特性
     路由
     gin engine
 
-### GoFrame框架
-
-https://goframe.org/quick/scaffold-boost
-
 ### 目录结构
 
 ``` shell
@@ -431,6 +427,48 @@ https://goframe.org/quick/scaffold-boost
 ### 功能框架
 
 User访问net.HTTP，通过ServerHTTP处理请求，通过requestHandler解析请求，通过路由信息查找方法，调用方法执行函数。
+
+## GoFrame框架
+
+[go-frame](https://goframe.org/quick/scaffold-boost)
+
+### 接口定义
+
+Request和Response定义
+
+### 参数校验
+
+`ci`，可以通过ci修饰规则
+
+``` golang
+func Example_Rule_CaseInsensitive() {
+    type BizReq struct {
+        Account   string `v:"required"`
+        Password  string `v:"required|ci|same:Password2"`
+        Password2 string `v:"required"`
+    }
+    var (
+        ctx = context.Background()
+        req = BizReq{
+            Account:   "gf",
+            Password:  "Goframe.org", // Diff from Password2, but because of "ci", rule check passed
+            Password2: "goframe.org",
+        }
+    )
+    if err := g.Validator().Data(req).Run(ctx); err != nil {
+        fmt.Println(err)
+    }
+
+    // output:
+}
+```
+
+### orm
+
+根据config的link中的表结构生存对应表的结构体，分别对应两个部分的内容是internal/dao 和 internal/dao/internal
+外层是简单的CRUD，内层是具体实现。
+
+实现更复杂的查询可以在internal/dao进行添加。
 
 ## Go-zero
 
