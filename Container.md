@@ -17,7 +17,7 @@ uts namespace:主机名和域名的隔离
 user namespace:用户和用户组的隔离
 
 #### CGroup
-控制资源分配，一旦超出配额，则发出OOM警告，配额包含CPU、内存、磁盘三大方面。
+xxxxxxxxxx mark:=&Node{    val,    head,}pre := markcur := pre.Nextfor{    nxt = cur.Next    cur.Next=nxt.Next    nxt.Next=pre.Next    pre.Next=nxt}go
 
 ## Docker
 REFERENCE
