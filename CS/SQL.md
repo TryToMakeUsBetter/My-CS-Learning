@@ -89,8 +89,6 @@ Transaction
 
 ##### 缓存机制
 
-
-
 [MySQL缓存深入理解（全网最深、最全、最实用）_mysql 单表缓存-CSDN博客](https://blog.csdn.net/Bb15070047748/article/details/106489254))
 
 #### Innodb
@@ -257,15 +255,21 @@ B+树 I/O次数更少
 create view <view_name> as <select语句>
 ```
 
-# 容器化部署
+## 业务场景
+
+单个NC文件大小是1-3GB
+
+### 数据结构
+
+## 容器化部署
 
 ``` cmd
 docker run -p 3306:3306 --name JY_mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql
 ```
 
-# 面试
+## 面试
 
-## 分页
+### 分页
 
 limit offset line
 offset决定从第几条开始分页
@@ -274,7 +278,7 @@ desc 倒序
 
 order by 排序
 
-## A=10 B<100 C>200 怎么查
+### A=10 B<100 C>200 怎么查
 
 普通的联合索引到 <，>，between和like就会中止。
 
