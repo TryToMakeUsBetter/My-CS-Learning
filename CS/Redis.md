@@ -216,3 +216,7 @@ Master 最好不要写内存快照，如果 Master 写内存快照，save 命令
 主从复制不要用图状结构，用单向链表结构更为稳定，即：Master <- Slave1<- Slave2 <- Slave3……这样的结构方便解决单点故障问题，实现 Slave 对 Master 的替换。如果 Master 挂了，可以立刻启用 Slave1 做 Master，其他不变。
 
 ### Redis过期键删除策略
+
+懒删除
+不访问到的话不会删除
+带来的问题，大量不会再被访问的key占据内存
