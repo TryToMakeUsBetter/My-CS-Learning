@@ -50,6 +50,40 @@ Transaction
     select <col> from tablea a full outer join tableb b on a.key = b.key 
 ```
 
+### 一些常见的函数
+
+#### 以pg为例
+
+``` sql
+    -- 窗口函数
+        -- 1. 基于todo_id, execution_num做分区
+        -- 2. 随后根据create_time选择最新的
+        SELECT *
+        FROM (
+            SELECT *,
+                ROW_NUMBER() OVER (
+                    PARTITION BY todo_id, execution_num
+                    ORDER BY create_time DESC
+                ) AS rn
+            FROM assignment_data_detail
+            WHERE condition
+        ) t
+        WHERE rn = 1;
+    -- distinct函数 
+        -- 1. 基于 todo_id, execution_num做去重处理
+        -- 2. 去重选择第1条
+        -- 实际逻辑是排序+去重
+        SELECT DISTINCT ON (todo_id, execution_num) *
+        FROM assignment_data_detail
+        WHERE condition
+        ORDER BY todo_id, execution_num, create_time DESC
+    -- COALESCE 是 SQL 中非常实用的空值处理函数，用来返回参数列表中第一个非 NULL 的值。
+        SELECT
+        name,
+        COALESCE(phone, '未填写')
+        FROM user_info;
+```
+
 ### 设计范式
 
 #### BCNF
