@@ -131,6 +131,194 @@ Get:幂等的,浏览器缓存Get,空Body,请求参数在url中
 Post:不幂等的,实体Body
 PUT:幂等的
 
+###### HTTP范围请求（Range Requests）- 传输部分数据
+
+HTTP协议支持通过范围请求来传输资源的部分数据，而不是整个资源。这对于大文件下载、视频流媒体、断点续传等场景非常重要。
+
+**核心概念**
+
+- **范围请求**：客户端通过 `Range` 请求头指定需要的字节范围
+- **范围响应**：服务器返回 `206 Partial Content` 状态码和指定范围的数据
+- **资源支持检测**：服务器通过 `Accept-Ranges` 响应头声明是否支持范围请求
+
+**请求头和响应头**
+
+请求头：
+```http
+Range: bytes=0-1023           # 请求前1024字节（0-1023）
+Range: bytes=1024-2047        # 请求第二个1KB（1024-2047）
+Range: bytes=1024-            # 请求从1024字节到文件末尾
+Range: bytes=-500             # 请求最后500字节
+Range: bytes=0-499,1000-1499  # 请求多个范围
+```
+
+响应头：
+```http
+Accept-Ranges: bytes          # 服务器支持按字节范围请求
+Accept-Ranges: none           # 服务器不支持范围请求
+
+Content-Range: bytes 0-1023/5000    # 返回0-1023字节，总共5000字节
+Content-Range: bytes 1024-2047/5000 # 返回1024-2047字节，总共5000字节
+Content-Range: bytes */5000         # 总大小已知，但未返回具体范围
+```
+
+**完整的范围请求示例**
+
+客户端请求：
+```http
+GET /large-file.zip HTTP/1.1
+Host: example.com
+Range: bytes=0-1023
+```
+
+服务器响应（支持范围请求）：
+```http
+HTTP/1.1 206 Partial Content
+Content-Type: application/zip
+Content-Length: 1024
+Content-Range: bytes 0-1023/10240
+Accept-Ranges: bytes
+
+[前1024字节的数据]
+```
+
+服务器响应（不支持范围请求）：
+```http
+HTTP/1.1 200 OK
+Content-Type: application/zip
+Content-Length: 10240
+Accept-Ranges: none
+
+[完整的10240字节数据]
+```
+
+**多范围请求（Multipart Ranges）**
+
+客户端请求多个不连续的范围：
+```http
+GET /document.pdf HTTP/1.1
+Host: example.com
+Range: bytes=0-499,1000-1499,3000-3499
+```
+
+服务器响应（使用multipart/byteranges）：
+```http
+HTTP/1.1 206 Partial Content
+Content-Type: multipart/byteranges; boundary=THIS_STRING_SEPARATES
+Content-Length: 1234
+
+--THIS_STRING_SEPARATES
+Content-Type: application/pdf
+Content-Range: bytes 0-499/5000
+
+[0-499字节的数据]
+--THIS_STRING_SEPARATES
+Content-Type: application/pdf
+Content-Range: bytes 1000-1499/5000
+
+[1000-1499字节的数据]
+--THIS_STRING_SEPARATES
+Content-Type: application/pdf
+Content-Range: bytes 3000-3499/5000
+
+[3000-3499字节的数据]
+--THIS_STRING_SEPARATES--
+```
+
+**条件范围请求**
+
+为了确保断点续传时文件未被修改，可以结合条件请求头：
+```http
+GET /video.mp4 HTTP/1.1
+Host: example.com
+Range: bytes=1024000-
+If-Range: "etag-value-123"        # 如果ETag匹配则返回范围，否则返回完整资源
+# 或
+If-Range: Wed, 21 Oct 2025 07:28:00 GMT  # 如果修改时间匹配则返回范围
+```
+
+如果资源已修改，服务器返回完整资源：
+```http
+HTTP/1.1 200 OK
+Content-Length: 5000000
+[完整的文件数据]
+```
+
+如果资源未修改，服务器返回指定范围：
+```http
+HTTP/1.1 206 Partial Content
+Content-Range: bytes 1024000-4999999/5000000
+Content-Length: 3976000
+[指定范围的数据]
+```
+
+**状态码**
+
+- **206 Partial Content**：成功返回部分内容
+- **416 Range Not Satisfiable**：请求的范围无效（超出资源大小）
+  ```http
+  HTTP/1.1 416 Range Not Satisfiable
+  Content-Range: bytes */5000    # 告知资源的实际大小
+  ```
+- **200 OK**：服务器不支持范围请求或忽略Range头，返回完整资源
+
+**应用场景**
+
+1. **断点续传**：下载中断后从断点继续
+   ```http
+   # 第一次请求前10MB
+   Range: bytes=0-10485759
+   
+   # 中断后继续请求剩余部分
+   Range: bytes=10485760-
+   If-Range: "original-etag"
+   ```
+
+2. **视频/音频流媒体**：按需加载指定时间段的数据
+   ```http
+   # 播放器拖动到中间位置，只请求需要的片段
+   Range: bytes=5242880-10485759
+   ```
+
+3. **大文件分片下载**：多线程并发下载不同片段
+   ```http
+   # 线程1
+   Range: bytes=0-2097151
+   
+   # 线程2
+   Range: bytes=2097152-4194303
+   
+   # 线程3
+   Range: bytes=4194304-
+   ```
+
+4. **PDF预览**：只加载第一页或目录
+   ```http
+   Range: bytes=0-102400    # 只请求前100KB用于预览
+   ```
+
+**实现注意事项**
+
+服务器端：
+- 检查 `Range` 请求头格式是否正确
+- 验证范围是否在有效范围内（0 到 资源大小-1）
+- 正确设置 `Content-Range` 和 `Content-Length`
+- 支持 `If-Range` 条件请求
+- 考虑是否支持多范围请求
+
+客户端：
+- 首次请求检查 `Accept-Ranges` 响应头
+- 记录断点位置和资源标识（ETag或Last-Modified）
+- 续传时使用 `If-Range` 验证资源未变化
+- 处理 206、200、416 等不同状态码
+- 多线程下载时合并数据片段
+
+**Range请求的安全性**
+
+- **DoS攻击防范**：限制单次请求的范围数量，避免恶意请求大量小范围
+- **权限验证**：每个范围请求都应进行权限检查
+- **缓存控制**：注意CDN和代理对范围请求的缓存行为
+
 #### HTTPS
 
 HTTP+SSL/TLS
