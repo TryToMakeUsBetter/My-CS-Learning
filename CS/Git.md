@@ -248,6 +248,7 @@ git rebase --abort                # 取消变基
 git branch -d <branch-name>       # 删除已合并的分支
 git branch -D <branch-name>       # 强制删除分支
 git push origin --delete <branch> # 删除远程分支
+git branch --set-upstream-to=origin/release local_release # 切换上游远端分支
 ```
 
 ### 远程仓库
