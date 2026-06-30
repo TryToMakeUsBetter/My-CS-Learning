@@ -359,7 +359,7 @@ TCP报文
 |可选部分|0-40||
 |数据部分|N||
 
-![TCP报文图](./picture/c1194a599224e5e7774bf28707043bd7.png)
+![TCP报文图](../picture/c1194a599224e5e7774bf28707043bd7.png)
 UDP报文
 
 |参数名称|长度|说明|
@@ -521,7 +521,7 @@ DNS解析
     HTTPS四次握手
 发送请求
     HTTP报文结构
-        ![http报文图](./picture/v2-cc159f1cc2a14f1bd09a9fb6e8d1d67b_1440w.jpg)
+        ![http报文图](../picture/v2-cc159f1cc2a14f1bd09a9fb6e8d1d67b_1440w.jpg)
 服务器处理请求
 返回HTTP响应
 浏览器渲染
